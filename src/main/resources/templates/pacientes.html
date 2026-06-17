@@ -25,7 +25,12 @@
 		<form action="/pacientes" method="post">
 			<input type="text" name="nome" placeholder="Nome do Paciente">
 			<input type="number" name="idade" placeholder="Idade do Paciente">
-			<button type="submit">Addicionar</button>
+			<button type="submit" onclick="message()">Addicionar</button>
 		</form>
+		<script>
+			function message(){
+				alert("Success!")
+			}
+		</script>
 	</section>
 </body>
