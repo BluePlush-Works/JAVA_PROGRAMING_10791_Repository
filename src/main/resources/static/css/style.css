@@ -23,3 +23,15 @@ td, th{
 	border: 1px solid #B2CEFF;
 	padding 10px;
 }
+
+button{
+	padding: 8px 12px;
+	margin: 5px;
+	cursor: pointer;
+}
+
+.aura_read{
+	color=yellow;
+	font-weight: bold;
+	text-transform: uppercase;
+}
