@@ -8,29 +8,31 @@
 </head>
 
 <body>
-	<table>
-		<tr>
-			<th>Nome</th>
-			<th>Idade</th>
-		</tr>
-		<tr th:each="p:${lista}">
-			<td th:text="${p.nome}"></td>
-			<td th:text="${p.idade}"></td>
-		</tr>
-	</table>
-	
-	<section>
-		<h2> Novo Paciente </h2>
+	<main>
+		<h2> Every Patient </h2>
 		
-		<form action="/pacientes" method="post">
-			<input type="text" name="nome" placeholder="Nome do Paciente">
-			<input type="number" name="idade" placeholder="Idade do Paciente">
-			<button type="submit" onclick="message()">Addicionar</button>
-		</form>
-		<script>
-			function message(){
-				alert("Success!")
-			}
-		</script>
-	</section>
+		<table id="table_values">
+			<tr>
+				<th>Name</th>
+				<th>Age</th>
+			</tr>
+			<tr th:each="p:${lista}">
+				<td class="value_name" th:text="${p.nome}"></td>
+				<td th:text="${p.idade}"></td>
+			</tr>
+		</table>
+		
+		<section>
+			<h2> New Patient </h2>
+			
+			<form action="/pacientes" method="post">
+				<input type="text" name="nome" placeholder="Name">
+				<input type="number" name="idade" placeholder="Age">
+				<button type="submit" onclick="message()">Addicionar</button>
+			</form>
+		</section>
+		<button type="button" onclick="highlight()">Highlight Name Colume</button>
+		<button type="button" onclick="hide_show()">Hide/Show Table</button>
+	</main>
+	<script src="/js/script.js"></script>
 </body>
