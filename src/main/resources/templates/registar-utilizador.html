@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang='en' xnlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset = 'UTF-8'>
+	<title>Registar</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+	<main>
+		<header>
+			<h1 id="Titulo"> New User </h1>
+			<p>Fill in the blanks to sign up.</p>
+		</header>
+		<nav class="menu">
+			<a href="/registar">New User</a>
+			<a href="/pacients">Pacients</a>
+			<a href="/medicos">Doctors</a>
+			<a href="/secretarias">Secretaries</a>
+			<a href="/utilizadors">Users</a>
+		</nav>
+		<section class="cartao">
+			<p th:if="{erro}" th:text="${erro}" class="erro"></p>
+			
+			<form action="/registar" method="post">
+				<label for="perfil">Type of User</label>
+				<select name="perfil" id="perfil" onchange="changeform()" required>
+					<option>Select</option> 
+					<option>Pacient</option>
+					<option>Doctor</option>
+					<option>Secretary</option>
+				</select>
+				
+				<label for="nome">Full Name</label>
+				<input type="text" id="nome" name="nome" placeholder="Full Name" required>
+				
+				<label for="email">Email</label>
+				<input type="email" id="email" name="email" placeholder="Email" required>
+				
+				<label for="datebirth">Date of Birth</label>
+				<input type="date" id="datebirth" name="dataNascimento" required>
+				
+				<label for="phone">Phone Number</label>
+				<input type="text" id="phone" name="telefone" placeholder="Phone Number" required>
+				
+				<label for="adress">Adress</label>
+				<input type="text" id="adress" name="endereco" placeholder="Adress" required>
+				
+				<div id="special_part" class="caco_especialidade">
+					<label for="special">Speciality</label>
+					<input type="text" id="special" name="especialidade" placeholder="Speciality" required>
+				</div>
+				
+				<button type="submit" onclick="message()">Addicionar</button>
+			</form>
+		</section>
+		<button type="button" onclick="highlight()">Highlight Name Colume</button>
+		<button type="button" onclick="hide_show()">Hide/Show Table</button>
+	</main>
+	<script src="/js/script.js"></script>
+</body>

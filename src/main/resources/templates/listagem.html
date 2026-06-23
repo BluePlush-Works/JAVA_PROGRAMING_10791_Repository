@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang='en' xnlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset = 'UTF-8'>
+	<title>Listagem da Clinica</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+	<main>
+		<input type="hidden" id="tipoPagina" th:value="${tipo}">
+		<header>
+			<h1 id="Titulo"> List </h1>
+			<p id="Subtitulo"> Registered of the Clinic</p>
+		</header>
+		<nav class="menu">
+			<a href="/registar">New User</a>
+			<a href="/pacients">Pacients</a>
+			<a href="/medicos">Doctors</a>
+			<a href="/secretarias">Secretaries</a>
+			<a href="/utilizadors">Users</a>
+		</nav>
+		<section>
+			<table id="table_values">
+				<tr>
+					<th>Name</th>
+					<th>Email</th>
+					<th th:if="${tipo=='UTILIZADOR'}">Profile</th>
+					<th th:if="${tipo=='MEDICO'}">Special</th>
+					<th>Date of Birth</th>
+					<th>Age</th>
+					<th>Phone</th>
+					<th>Adress</th>
+				</tr>
+				<tr th:each="p:${lista}">
+					<td class="value_name" th:text="${tipo=='UTILIZADOR'} ? ${item.nome}: ${item.utilizador.nome}"></td>
+					<td th:text="${tipo=='UTILIZADOR'} ? ${item.email}: ${item.utilizador.email}"></td>
+					<td th:if="${tipo=='UTILIZADOR'}" th:text="${item.perfil}"></td>
+					<td th:if="${tipo=='MEDICO'}" th:text="${item.especialidade}"></td>
+					<td th:text="${tipo=='UTILIZADOR'} ? ${#temporals.format(item.dataNashimento, 'MM/dd/yyyy')} : ${#temporals.format(item.dataNashimento, 'MM/dd/yyyy')}"></td>
+					<td th:text="${tipo=='UTILIZADOR'} ? ${item.idade}: ${item.utilizador.idade}"></td>
+					<td th:text="${tipo=='UTILIZADOR'} ? ${item.telefone}: ${item.utilizador.telefone}"></td>
+					<td th:text="${tipo=='UTILIZADOR'} ? ${item.endereco}: ${item.utilizador.endereco}"></td>
+					
+				</tr>
+			</table>
+			<div class="buttons">
+				<button type="button" onclick="highlight()">Highlight Name Colume</button>
+				<button type="button" onclick="hide_show()">Hide/Show Table</button>
+			</div>
+		</section>
+	</main>
+	<script src="/js/script.js"></script>
+</body>
