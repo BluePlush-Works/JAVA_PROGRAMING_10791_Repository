@@ -10,13 +10,14 @@ h2{
 }
 
 table{
-	width: 69%;
+	width: 100%;
 	border-collapse: collapse;
 	margin-top: 15px;
 }
 
 th{
 	background-color: #F0B2FF;
+	color: red;
 }
 
 td, th{
@@ -28,10 +29,32 @@ button{
 	padding: 8px 12px;
 	margin: 5px;
 	cursor: pointer;
+	border: none;
+	border-radius: 5px>;
 }
 
 .aura_read{
 	color=yellow;
 	font-weight: bold;
 	text-transform: uppercase;
+}
+
+.menu{
+	margin-bottom: 20 px;
+	display: inline-block;
+	text-decoration: none;
+	background-color: #C07CFF;
+	color: white;
+	padding: 9 px 12 px;
+}
+
+.formulario{
+	display: flex;
+	flex-direction: column;
+	max-width: 500 px;
+}
+
+.lable{
+	margin-top: 10px;
+	font-weight: bold;
 }
