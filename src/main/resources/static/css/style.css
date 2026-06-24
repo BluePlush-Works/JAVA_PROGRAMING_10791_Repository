@@ -1,60 +1,198 @@
 body{
-	
-	font-family: Arial, sans-serif;
-	margin: 20px;
-	background-color: #1CD1FF;
+font-family: Arial, sans-serif;
+margin: 20px;
+background-color: #f5f9fc;
+color:#222;
 }
 
-h2{
-	color: #C07CFF;
+main{
+width: 90%;
+margin: 30px auto;
+}
+
+.cabecalho {
+padding: 25px;
+border-radius: 10px;
+margin-bottom: 20px;
+background-color: #eeeeee;
+border-left: 8px solid #444444;
+}
+
+.cabecalho h1 {
+margin: 0;
+color: #444444;
+}
+
+.cabecalho p {
+margin-bottom:0;
+}
+
+.menu {
+margin-bottom: 20px;
+}
+
+.menu a {
+display: inline-block;
+text-decoration: none;
+background-color: #444444;
+color: white;
+padding: 9px 14px;
+border-radius: 5px;
+margin-right: 6px;
+}
+
+.menu a:hover{
+opacity: 0.85;
+}
+
+.cartao{
+background-color: white;
+padding: 20px;
+border-radius: 10px;
+border: 1px solid #ddd;
 }
 
 table{
-	width: 100%;
-	border-collapse: collapse;
-	margin-top: 15px;
+width: 100%;
+border-collapse: collapse;
+margin-top: 15px;
 }
 
 th{
-	background-color: #F0B2FF;
-	color: red;
+background-color: #eeeeee;
+color: #444444;
 }
 
-td, th{
-	border: 1px solid #B2CEFF;
-	padding 10px;
+th,
+td{
+border: 1px solid #999;
+padding: 10px;
+text-align: left;
 }
 
 button{
-	padding: 8px 12px;
-	margin: 5px;
-	cursor: pointer;
-	border: none;
-	border-radius: 5px>;
+padding: 9px 14px;
+margin-top: 15px;
+cursor: pointer;
+background-color: #444444;
+color: white;
+border: none;
+border-radius: 5px;
 }
 
-.aura_read{
-	color=yellow;
-	font-weight: bold;
-	text-transform: uppercase;
+button:hover {
+opcaity: 0.85;
 }
 
-.menu{
-	margin-bottom: 20 px;
-	display: inline-block;
-	text-decoration: none;
-	background-color: #C07CFF;
-	color: white;
-	padding: 9 px 12 px;
+.formulario {
+display: flex;
+flex-direction: column;
+max-width: 500px;
 }
 
-.formulario{
-	display: flex;
-	flex-direction: column;
-	max-width: 500 px;
+label{
+margin-top: 10px;
+font-weight: bold;
 }
 
-.lable{
-	margin-top: 10px;
-	font-weight: bold;
+input,
+select {
+padding: 9px;
+margin-top: 5px;
+border: 1px solid #aaa;
+border-radius: 5px;
+}
+
+.destacado{
+color: red;
+font-weight: bold;
+text-transform: uppercase;
+}
+
+.botoes{
+margin-top: 15px;
+}
+
+.campo-especialidade{
+display:none;
+}
+
+.erro{
+background-color: #f8d7da;
+color:$842029;---- é cardinal a o ines de cifrao
+padding: 10px;
+border-radius: 5px;
+border: 1px solid #f5c2c7;
+}
+
+/* Paciente */
+.theme_pacient .cabecalho {
+background-color: #d9eaf7;
+border-left-color: #0b5394;
+}
+
+.theme_pacient .cabecalho h1, .theme_pacient th {
+color: #0b5394;
+}
+
+.tema-paciente th {
+background-color: #d9eaf7;
+}
+
+.theme_pacient .menu a, .theme_pacient button {
+background-color: #0b5394;
+}
+
+/* Doctor */
+.theme_doctor .cabecalho {
+background-color: #d9eaf7;
+border-left-color: #0b5394;
+}
+
+.theme_doctor .cabecalho h1, .theme_doctor th {
+color: #0b5394;
+}
+
+.theme_doctor th {
+background-color: #d9eaf7;
+}
+
+.theme_doctor .menu a, .theme_doctor button {
+background-color: #0b5394;
+}
+
+/* Secretary */
+.theme_secretary .cabecalho {
+background-color: #d9eaf7;
+border-left-color: #0b5394;
+}
+
+.theme_secretary .cabecalho h1, .theme_secretary th {
+color: #0b5394;
+}
+
+.theme_secretary th {
+background-color: #d9eaf7;
+}
+
+.theme_secretary .menu a, .theme_secretary button {
+background-color: #0b5394;
+}
+
+/* User */
+.theme_user .cabecalho {
+background-color: #d9eaf7;
+border-left-color: #0b5394;
+}
+
+.theme_user .cabecalho h1, .theme_user th {
+color: #0b5394;
+}
+
+.theme_user th {
+background-color: #d9eaf7;
+}
+
+.theme_user .menu a, .theme_user button {
+background-color: #0b5394;
 }
