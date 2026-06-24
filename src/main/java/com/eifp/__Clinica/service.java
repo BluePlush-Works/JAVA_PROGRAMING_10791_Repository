@@ -26,6 +26,9 @@ public class RegistoService {
 	public void registarPaciente(String nome, String email, String senha, LocalDate dataNascimento, String telefone, String endereco){
 
 		Utilizador utilizador = new Utilizador(	null, nome, email, senha, "PACIENTE", dataNascimento, telefone, endereco);
+		if(utilizadorRepository.existsByEmail(email)){
+			throw new RuntimeException("That email adress is already connected to an existing user.");
+		}
 
 		utilizadorRepository.save(utilizador);
 
