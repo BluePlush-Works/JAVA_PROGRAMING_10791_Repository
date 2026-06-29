@@ -74,3 +74,43 @@ public class ListagemService {
 		return utilizadorRepository.findAll();
 	}
 }
+
+@Service
+public class DisponiblidadeService{
+	private final DisponiblidadeRepository disponiblidaderepository;
+	private final MedicoRepository medicoRepository;
+	
+	public DisponiblidadeService(DisponiblidadeRepository disponiblidaderepository, MedicoRepository medicoRepository){
+		this.disponiblidaderepository = disponiblidaderepository;
+		this.medicoRepository = medicoRepository;
+	}
+	
+	public List<Disponiblidade> listarTodos(){
+		return disponiblidaderepository.findAll();
+	}
+	
+	public List<Disponiblidade> listarporespeciblidade (String especiblidade){
+		return disponiblidaderepository.findbyMedico_IDOrderByDateAscHoraInicioAsc(especiblidade);
+	}
+	
+	public void criarDisponiblidade (Long medico_ID, LocalDate date, LocalTime horainicio, LocalTime horafin;){
+		Medico medico = medicoRepository.findByID(medico_ID).orElseThrow(()-> new RunTimeExeption("No doctor was found."));
+		
+		if(!horainicio.isBefore(horafin)){
+			throw new RunTimeExeption("Start time should be before end time.");
+		}
+		
+		LocalTime horaatual = horainicio;
+		
+		while(horaatual.plusHours(1).isBefore(horafin) || horaatual.plusHours(1).equals(horafin)){
+			LocalTime horaFimConsulta = horaAtual.plusHours(1);
+			
+			Boolean jaExiste = disponibilidadeRepository.existsByMedico_IdAndDataAndHoraInicioAndHoraFim(medicoId, data, horaAtual, horaFimTrabalho);
+
+			if(!jaExiste){
+				Disponibilidade disponibilidade = new Disponibilidade(null, medico, data, horaAtual, horaFimConsulta, false);
+				disponibilidadeRepository.save(disponibilidade);
+			}
+		}
+	}
+}
