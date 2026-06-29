@@ -94,10 +94,10 @@ public class DisponiblidadeService{
 	}
 	
 	public void criarDisponiblidade (Long medico_ID, LocalDate date, LocalTime horainicio, LocalTime horafin;){
-		Medico medico = medicoRepository.findByID(medico_ID).orElseThrow(()-> new RunTimeExeption("No doctor was found."));
+		Medico medico = medicoRepository.findByID(medico_ID).orElseThrow(()-> new RuntimeException("No doctor was found."));
 		
 		if(!horainicio.isBefore(horafin)){
-			throw new RunTimeExeption("Start time should be before end time.");
+			throw new RuntimeException("Start time should be before end time.");
 		}
 		
 		LocalTime horaatual = horainicio;
@@ -112,5 +112,47 @@ public class DisponiblidadeService{
 				disponibilidadeRepository.save(disponibilidade);
 			}
 		}
+	}
+}
+
+@Service
+public class ConsultaService{
+	private final ConsultaRepository consultarepository;
+	private final MedicoRepository medicoRepository;
+	private final PacienteRepository pacienterepository;
+	private final SecretariaRepository secretariarepository;
+	private final DisponiblidadeRepository disponiblidaderepository;
+	
+	public ConsultaService(ConsultaRepository consultarepository, MedicoRepository medicoRepository, PacienteRepository pacienterepository, SecretariaRepository secretariarepository, DisponiblidadeRepository disponiblidaderepository){
+		this.consultarepository = consultarepository;
+		this.medicoRepository = medicoRepository;
+		this.pacienterepository = pacienterepository;
+		this.secretariarepository = secretariarepository;
+		this.disponiblidaderepository = disponiblidaderepository;
+	}
+	
+	public List<Consulta> listarTodos(){
+		return consultarepository.findAll();
+	}
+	
+	public List<String> listarespecibilidade(){
+		return medicoRepository.listarespecibilidade();
+	}
+	
+	public List<Disponibilidade> listardisponibilidade(){
+		return disponiblidaderepository.findbyMedico_IDOrderByDateAscHoraInicioAsc(especiblidade);
+	}
+	
+	public void marcarconsulta(Long disponibilidade_id, Long paciente_id, Long secretaria_id){
+		Disponibilidade disponibilidade = disponiblidaderepository.findByID(disponibilidadeId).orElseThrow(()-> new RuntimeException("No availability was found."));
+		Paciente paciente = pacienterepository.findByID(pacienteId).orElseThrow(()-> new RuntimeException("Pacient not found."));
+		Secretaria secretaria = secretariarepository.findByID(secretariaId).orElseThrow(()-> new RuntimeException("Secretary not found."));
+		
+		Consulta consulta = new Consulta(null, disponibilidade, paciente, secretaria, disponibilidade.getData(), disponibilidade.horainicio, disponibilidade.horafin, "BOOKED");
+		
+		consultarepository.save(consulta);
+		
+		disponibilidade.setOcupada(true);
+		disponiblidaderepository.save(disponibilidade);
 	}
 }
