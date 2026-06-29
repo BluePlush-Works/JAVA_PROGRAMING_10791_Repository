@@ -1,158 +1,159 @@
-package service;
+package com.iefp.clinicaMedica.controller;
 
-import model;
-import repository;
+import service;
+import org.springframework.stereotype.Controller;
 
-import java.time.LocalDate;
-import java.util.List;
+@Controller
+public class RegistoContoller {
 
-public class RegistoService {
+	private final RegistoService registoService;
 
-	private final UtilizadorRepository utilizadorRepository;
-	private final PacienteRepository pacienteRepository;
-	private final SecretariaRepository secretariaRepository;
-	private final MedicoRepository medicoRepository;
-
-	public RegistoService(UtilizadorRepository utilizadorRepository,
-		PacienteRepository pacienteRepository,
-		SecretariaRepository secretariaRepository,
-		MedicoRepository medicoRepository) {
-		this.utilizadorRepository = utilizadorRepository;
-		this.pacienteRepository = pacienteRepository;
-		this.secretariaRepository = secretariaRepository;
-		this.medicoRepository = medicoRepository;
-	}
-
-	public void registarPaciente(String nome, String email, String senha, LocalDate dataNascimento, String telefone, String endereco){
-
-		Utilizador utilizador = new Utilizador(	null, nome, email, senha, "PACIENTE", dataNascimento, telefone, endereco);
-		if(utilizadorRepository.existsByEmail(email)){
-			throw new RuntimeException("That email adress is already connected to an existing user.");
-		}
-
-		utilizadorRepository.save(utilizador);
-
-		Paciente paciente = new Paciente(null, utilizador);
+	public RegistoContoller(RegistoService registoService) {
+		this.registoService = registoService;
 	}
 	
-	public void registarMedico(String nome, String email, String senha, LocalDate dataNascimento, String telefone, String endereco, String especiblidade){
-
-		Utilizador utilizador = new Utilizador(	null, nome, email, senha, "MEDICO", dataNascimento, telefone, endereco, especiblidade);
-
-		utilizadorRepository.save(utilizador);
-
-		Medico medico = new Medico(null, utilizador, especiblidade);
+	@GetMapping("/registar")
+	public String formularioPaciente(){
+		return "registar-paciente";
 	}
+
+	@PostMapping("/registar")
+	public String registarUtilizador(@RequestParam String nome,@RequestParam String email, @RequestParam String senha, @RequestParam LocalDate dataNascimento, @RequestParam String telefone, @RequestParam String endereco, @RequestParam String especiblidade, Model model){
 	
-	public void registarSecretaria(String nome, String email, String senha, LocalDate dataNascimento, String telefone, String endereco){
-
-		Utilizador utilizador = new Utilizador(	null, nome, email, senha, "PACIENTE", dataNascimento, telefone, endereco);
-
-		utilizadorRepository.save(utilizador);
-
-		Secretaria secretaria = new Secretaria(null, utilizador);
-	}
 	
-}
-
-@Service
-public class ListagemService {
-
-	private final UtilizadorRepository utilizadorRepository;
-	private final SecretariaRepository secretariaRepository;
-	private final MedicoRepository medicoRepository;
-	private final PacienteRepository pacienteRepository;
-
-	public ListagemService(UtilizadorRepository utilizadorRepository,SecretariaRepository secretariaRepository,MedicoRepository medicoRepository,PacienteRepository pacienteRepository) {
-		this.utilizadorRepository = utilizadorRepository;
-		this.secretariaRepository = secretariaRepository;
-		this.medicoRepository = medicoRepository;
-		this.pacienteRepository = pacienteRepository;
-	}
-
-	public List<Utilizador> listarTodos(){
-		return utilizadorRepository.findAll();
-	}
-}
-
-@Service
-public class DisponiblidadeService{
-	private final DisponiblidadeRepository disponiblidaderepository;
-	private final MedicoRepository medicoRepository;
-	
-	public DisponiblidadeService(DisponiblidadeRepository disponiblidaderepository, MedicoRepository medicoRepository){
-		this.disponiblidaderepository = disponiblidaderepository;
-		this.medicoRepository = medicoRepository;
-	}
-	
-	public List<Disponiblidade> listarTodos(){
-		return disponiblidaderepository.findAll();
-	}
-	
-	public List<Disponiblidade> listarporespeciblidade (String especiblidade){
-		return disponiblidaderepository.findbyMedico_IDOrderByDateAscHoraInicioAsc(especiblidade);
-	}
-	
-	public void criarDisponiblidade (Long medico_ID, LocalDate date, LocalTime horainicio, LocalTime horafin;){
-		Medico medico = medicoRepository.findByID(medico_ID).orElseThrow(()-> new RuntimeException("No doctor was found."));
-		
-		if(!horainicio.isBefore(horafin)){
-			throw new RuntimeException("Start time should be before end time.");
-		}
-		
-		LocalTime horaatual = horainicio;
-		
-		while(horaatual.plusHours(1).isBefore(horafin) || horaatual.plusHours(1).equals(horafin)){
-			LocalTime horaFimConsulta = horaAtual.plusHours(1);
-			
-			Boolean jaExiste = disponibilidadeRepository.existsByMedico_IdAndDataAndHoraInicioAndHoraFim(medicoId, data, horaAtual, horaFimTrabalho);
-
-			if(!jaExiste){
-				Disponibilidade disponibilidade = new Disponibilidade(null, medico, data, horaAtual, horaFimConsulta, false);
-				disponibilidadeRepository.save(disponibilidade);
+		try{
+			if(perfil.equals("PACIENTE")){
+				registoService.registarPaciente(nome, email, senha, dataNascimento, telefone, endereco);
+				return "redirect:/pacientes";
 			}
+			if(perfil.equals("MEDICO")){
+				registoService.registarMedico(nome, email, senha, dataNascimento, telefone, endereco, especiblidade);
+
+				return "redirect:/Medico";
+			}
+			if(perfil.equals("SECRETARIA")){
+				registoService.registarPaciente(nome, email, senha, dataNascimento, telefone, endereco);
+
+				
+			return "redirect:/Secretaria";
+			}
+			return "redirect:/utilizadors";
+		}catch(RuntimeException erro){
+			rodel.acdAttribute("erro", erro.getMessage());
+			return "registar-utilizador"
 		}
 	}
 }
 
-@Service
-public class ConsultaService{
-	private final ConsultaRepository consultarepository;
-	private final MedicoRepository medicoRepository;
-	private final PacienteRepository pacienterepository;
-	private final SecretariaRepository secretariarepository;
-	private final DisponiblidadeRepository disponiblidaderepository;
-	
-	public ConsultaService(ConsultaRepository consultarepository, MedicoRepository medicoRepository, PacienteRepository pacienterepository, SecretariaRepository secretariarepository, DisponiblidadeRepository disponiblidaderepository){
-		this.consultarepository = consultarepository;
-		this.medicoRepository = medicoRepository;
-		this.pacienterepository = pacienterepository;
-		this.secretariarepository = secretariarepository;
-		this.disponiblidaderepository = disponiblidaderepository;
+
+@Controller
+public class ListagemController {
+	private final ListagemService listagemService;
+
+	public ListagemController(ListagemService listagemService) {
+		this.listagemService = listagemService;
 	}
 	
-	public List<Consulta> listarTodos(){
-		return consultarepository.findAll();
+	@GetMapping('/')
+	public String paginainicial(){
+		return "redirect:/pacientes";
 	}
 	
-	public List<String> listarespecibilidade(){
-		return medicoRepository.listarespecibilidade();
+	@GetMapping('/utilizadors')
+	public String listarUtilizadors(Model nodel){
+		model.addAtribute("lista", ListagemService.listarUtilizadors());
+		model.addAtribute("tipo", "UTILIZADORS");
+		return "utilizadors"
 	}
 	
-	public List<Disponibilidade> listardisponibilidade(){
-		return disponiblidaderepository.findbyMedico_IDOrderByDateAscHoraInicioAsc(especiblidade);
+	@GetMapping('/paciente')
+	public String listarPaciente(Model nodel){
+		model.addAtribute("lista", ListagemService.listarPaciente());
+		model.addAtribute("tipo", "PACIENTE");
+		return "paciente"
 	}
 	
-	public void marcarconsulta(Long disponibilidade_id, Long paciente_id, Long secretaria_id){
-		Disponibilidade disponibilidade = disponiblidaderepository.findByID(disponibilidadeId).orElseThrow(()-> new RuntimeException("No availability was found."));
-		Paciente paciente = pacienterepository.findByID(pacienteId).orElseThrow(()-> new RuntimeException("Pacient not found."));
-		Secretaria secretaria = secretariarepository.findByID(secretariaId).orElseThrow(()-> new RuntimeException("Secretary not found."));
+	@GetMapping('/medico')
+	public String listarUtilizadors(Model nodel){
+		model.addAtribute("lista", ListagemService.listarMedico());
+		model.addAtribute("tipo", "MEDICO");
+		return "medico"
+	}
+	
+	@GetMapping('/secretaria')
+	public String listarUtilizadors(Model nodel){
+		model.addAtribute("lista", ListagemService.listarSecretaria());
+		model.addAtribute("tipo", "SECRETARIA");
+		return "secretaria"
+	}
+}
+
+@Controller
+public class DisponiblidadeController{
+	private final DisponiblidadeService disponiblidadeservice;
+	private final ListagemService listagemService;
+	
+	public DisponiblidadeService(DisponiblidadeService disponiblidadeservice, ListagemService listagemService){
+		this.disponiblidadeservice = disponiblidadeservice;
+		this.listagemService = listagemService;
+	}
+	
+	@GetMapping("/disponiblidade")
+	public String listarDisponiblidade (Model model){
+		model.addAtribute("disponiblidade", disponiblidadeservice.listarTodas());
+		model.addAtribute("medico", listagemService.listarMedico());
+	}
+	
+	@PostMapping("/disponiblidade")
+	public String criarDisponiblidade(@RequestParam Long medicoID, @RequestParam LocalDate date, @RequestParam LocalTime horainicio, @RequestParam LocalTime horaend, Model model){
+		try{
+			disponiblidadeservice.criarDisponiblidade(medicoID, date, horainicio, horaend, model)
+		}catch (RuntimeException error){
+			model.addAtribute("error", error.getMessage());
+			model.addAtribute("disponiblidade", disponiblidadeservice.listarTodas());
+			model.addAtribute("medico", listagemService.listarMedico());
+			return "disponiblidade";
+		}
+	}
+}
+
+Controller
+public class ConsultaController{
+	private final consultaService;
+	private final listagemService;
+	
+	public DisponiblidadeService(ConsultaService consultaService, ListagemService listagemService){
+		this.consultaService = consultaService;
+		this.listagemService = listagemService;
+	}
+	
+	@GetMapping("/consultas")
+	public String listarConsultas (@RequestParam(required = false) String especiblidade, Model model){
+		model.addAtribute("consulta", consultaService.listarTodas());
+		model.addAtribute("especiblidade", listagemService.listarEspecilidade());
+		model.addAtribute("paciente", listagemService.listarPaciente());
+		model.addAtribute("secretaria", listagemService.listarSecretaria());
+		model.addAtribute("especiblidadeSelecionada", especiblidade);
 		
-		Consulta consulta = new Consulta(null, disponibilidade, paciente, secretaria, disponibilidade.getData(), disponibilidade.horainicio, disponibilidade.horafin, "BOOKED");
+		if(especiblidade != null && !especiblidade.isEmpty()){
+			model.addAtribute("disponiblidade", consultaService.listarDisponiblidade(especiblidade));
+		}
 		
-		consultarepository.save(consulta);
-		
-		disponibilidade.setOcupada(true);
-		disponiblidaderepository.save(disponibilidade);
+		return "consulta";
+	}
+	
+	@PostMapping("/consultas")
+	public String marcarConsulta(@RequestParam Long disponiblidadeId, @RequestParam Long pacienteId, @RequestParam(required = false) Long secretariaId, Model model){
+		try{
+			consultaService.marcarConsulta(disponiblidadeId, pacienteId, secretariaId);
+			return "redirect:/consultas";
+		}catch (RuntimeException){
+			model.addAtribute("error", error.getMessage());
+			model.addAtribute("consulta", consultaService.listarEspecilidade());
+			model.addAtribute("especiblidades", consultaService.listarEspecilidade());
+			model.addAtribute("pacientes", consultaService.listarEspecilidade());
+			model.addAtribute("secretarias", consultaService.listarEspecilidade());
+			return "consultas";
+		}
 	}
 }
