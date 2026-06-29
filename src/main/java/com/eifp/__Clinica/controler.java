@@ -28,11 +28,14 @@ public class RegistoContoller {
 			}
 			if(perfil.equals("MEDICO")){
 				registoService.registarMedico(nome, email, senha, dataNascimento, telefone, endereco, especiblidade);
+
 				return "redirect:/Medico";
 			}
 			if(perfil.equals("SECRETARIA")){
 				registoService.registarPaciente(nome, email, senha, dataNascimento, telefone, endereco);
-				return "redirect:/Secretaria";
+
+				
+			return "redirect:/Secretaria";
 			}
 			return "redirect:/utilizadors";
 		}catch(RuntimeException erro){
@@ -82,5 +85,34 @@ public class ListagemController {
 		model.addAtribute("lista", ListagemService.listarSecretaria());
 		model.addAtribute("tipo", "SECRETARIA");
 		return "secretaria"
+	}
+}
+
+@Controller
+public class DisponiblidadeController{
+	private finalv DisponiblidadeService disponiblidadeservice;
+	private final ListagemService listagemService;
+	
+	public DisponiblidadeService(DisponiblidadeService disponiblidadeservice, ListagemService listagemService){
+		this.disponiblidadeservice = disponiblidadeservice;
+		this.listagemService = listagemService;
+	}
+	
+	@GetMapping("/disponiblidade")
+	public String listarDisponiblidade (Model model){
+		model.addAtribute("disponiblidade", disponiblidadeservice.listarTodas());
+		model.addAtribute("medico", listagemService.listarMedico());
+	}
+	
+	@PostMapping("/disponiblidade")
+	public String criarDisponiblidade(@RequestParam Long medicoID, @RequestParam LocalDate date, @RequestParam LocalTime horainicio, @RequestParam LocalTime horaend, Model model){
+		try{
+			disponiblidadeservice.criarDisponiblidade(medicoID, date, horainicio, horaend, model)
+		}catch (RuntimeException error){
+			model.addAtribute("error", error.getMessage());
+			model.addAtribute("disponiblidade", disponiblidadeservice.listarTodas());
+			model.addAtribute("medico", listagemService.listarMedico());
+			return "disponiblidade";
+		}
 	}
 }
