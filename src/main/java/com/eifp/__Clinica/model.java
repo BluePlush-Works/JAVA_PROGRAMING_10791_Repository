@@ -108,3 +108,30 @@ public class Disponiblidade{
 	
 	private boolean ocupado;
 }
+
+@Entity
+@Date
+@NoArgsConstructor
+@AllArgsConstructor
+public class Consulta{
+	@Id
+	@GenerateValue(stratagy = GenerationType.IDENTITY)
+	private long id;
+	
+	@ManyToOne
+	@JoinColumn(name = "disponiblidade_ID")
+	private Disponiblidade disponiblidade;
+	
+	@ManyToOne
+	@JoinColumn(name = "paciente_ID")
+	private Paciente paciente;
+	
+	@ManyToOne
+	@JoinColumn(name = "secretaria_ID")
+	private Secretaria secretaria;
+	
+	private LocalDate date;
+	private LocalTime horainicio;
+	private LocalTime horafin;
+	private String estado;
+}
