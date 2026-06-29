@@ -88,3 +88,23 @@ public class Secretaria{
 	@JoinColumn(name = "utilizador_id", unique = true)
 	private Utilizador utilizado;
 }
+
+@Entity
+@Date
+@NoArgsConstructor
+@AllArgsConstructor
+public class Disponiblidade{
+	@Id
+	@GenerateValue(stratagy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@ManyToOne
+	@JoinColumn(name = "medico_ID")
+	private Medico medico;
+	
+	private LocalDate date;
+	private LocalTime horainicio;
+	private LocalTime horafin;
+	
+	private boolean ocupado;
+}
