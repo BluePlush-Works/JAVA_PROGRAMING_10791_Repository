@@ -6,11 +6,11 @@ import com.iefd._Clinica.model.java;
 import java.util.List;
 
 public interface UtilizadorRepository extends JpaRepository<Utilizador, Long>{
-	aaaaaaaaa
+	
 }
 
 public interface SecretariaRepository extends JpaRepository<Secretaria, Long>{
-	aaaaaaaaa
+	
 }
 
 public interface MedicoRepository extends JpaRepository<Medico, Long>{
@@ -24,4 +24,8 @@ public interface DisponiblidadeRepository extends JpaRepository<Disponiblidade, 
 	List<Disponiblidade> findbyMedico_IDOrderByDateAscHoraInicioAsc<Long medico_ID>;
 	
 	Boolean existsByMedico_IDAndDataAndHoraInicioAndHoraFin(Lonf medico_ID, LocalDate date, LocalTime HoraInicio, LocalTime HoraFin);
+}
+
+public interface ConsultaRepository extends JpaRepository<Consulta, Long>{
+	
 }
