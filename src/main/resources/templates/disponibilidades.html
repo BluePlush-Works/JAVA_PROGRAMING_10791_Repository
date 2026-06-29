@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang='en' xnlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset = 'UTF-8'>
+	<title>Disponibilidades</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+	<main>
+		<header>
+			<h1>Availability of the Clinic</h1>
+			<p>Time Table for every doctor of the clinic</p>
+		</header>
+		<nav class="menu">
+			<a href="/registar">New User</a>
+			<a href="/pacients">Pacients</a>
+			<a href="/medicos">Doctors</a>
+			<a href="/secretarias">Secretaries</a>
+			<a href="/utilizadors">Users</a>
+			<a href="/disponibilidades">Availability</a>
+		</nav>
+		<section class="cartao">
+			<h2>Availability of Clinic's Doctors</h2>
+			
+			<table>
+				<tr>
+					<th>Doctor</th>
+					<th>Specialty</th>
+					<th>Date of Work</th>
+					<th>Clock In</th>
+					<th>Clock Out</th>
+					<th>State</th>
+				</tr>
+				
+				<tr: th:each="d : ${disponibilidades}">
+					<td th:text="${d.medico.utilizador.nome}"></td>
+					<td th:text="${d.medico.especilidade}"></td>
+					<td th:text="${#temporals.format(d.date, 'dd/MM/yyyy')}"></td>
+					<td th:text="${d.horainicio}"></td>
+					<td th:text="${d.horafim}"></td>
+					<td th:text="${d.ocupada} ? 'Busy' : 'Available'"></td>
+				</tr>
+			</table>
+		</section>
+		<section class="cartao">
+			<h2>Register Work Hours</h2>
+			<p th:if="${error}" th:text="${erro}" class="error"></p>
+			
+			<form action="/disponibilidades" method="post" class="formulario">
+				<label for="medicoID">Doctor</label>
+				<select>
+					<option>Select Doctor</option>
+					<option th:each="n : ${medicos}" th:value="${m.id}" th:text="${m.utilizador.nome + ' - ' + m.especilidade}"></option>
+				</select>
+				<label for="date">Date of Work</label>
+				<input type="date" id="date" name="date" required>
+				<label for="horainicio">Clock In</label>
+				<input type="time" id="horainicio" name="horainicio" required>
+				<label for="horafim">Clock Out</label>
+				<input type="time" id="horafim" name="horafim" required>
+				<button type="submit">Created Availability</button>
+			</form>
+		</section>
+	</main>
+	<script src="/js/script.js"></script>
+</body>
