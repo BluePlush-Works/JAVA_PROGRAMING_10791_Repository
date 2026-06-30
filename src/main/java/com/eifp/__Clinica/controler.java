@@ -43,6 +43,33 @@ public class RegistoContoller {
 			return "registar-utilizador"
 		}
 	}
+	
+	@PostMapping("/receitas")
+	public String criarReceita(@RequestParam Long consultaId, @RequestParam String medicamento, @RequestParam String dosagem, @RequestParam String intrucoes, Model model){
+		try{
+			registoService.criarReceita(consultaId, medicamento, dosagem, intrucoes);
+			return "redirect:/receitas";
+		}catch (RuntimeException error){
+			model.addAtribute("error", error.getMessage());
+			model.addAtribute("receitas", listagemService.listarReceita());
+			model.addAtribute("consulta", listagemService.listarTodasConsultas());
+			return "receitas";
+		}
+	}
+	
+	@PostMapping("/exames")
+	public String criarExame(@RequestParam Long consultaId, @RequestParam String tipoExame, @RequestParam String discricao, @RequestParam(required = false) String resultado, Model model){
+		try{
+			registoService.criarExame(consultaId, medicamento, dosagem, intrucoes);
+			return "redirect:/exames";
+		}catch (RuntimeException error){
+			model.addAtribute("error", error.getMessage());
+			model.addAtribute("exames", listagemService.listarReceita());
+			model.addAtribute("consulta", listagemService.listarTodasConsultas());
+			return "exames";
+		}
+	}
+	
 }
 
 
@@ -86,11 +113,55 @@ public class ListagemController {
 		model.addAtribute("tipo", "SECRETARIA");
 		return "secretaria"
 	}
+	
+	@GetMapping("/consultas")
+	public String listarConsultas (@RequestParam(required = false) String especiblidade, Model model){
+		model.addAtribute("consulta", consultaService.listarTodas());
+		model.addAtribute("especiblidade", listagemService.listarEspecilidade());
+		model.addAtribute("paciente", listagemService.listarPaciente());
+		model.addAtribute("secretaria", listagemService.listarSecretaria());
+		model.addAtribute("especiblidadeSelecionada", especiblidade);
+		
+		if(especiblidade != null && !especiblidade.isEmpty()){
+			model.addAtribute("disponiblidade", consultaService.listarDisponiblidade(especiblidade));
+		}
+		
+		return "consulta";
+	}
+	
+	@PostMapping("/consultas")
+	public String marcarConsulta(@RequestParam Long disponiblidadeId, @RequestParam Long pacienteId, @RequestParam(required = false) Long secretariaId, Model model){
+		try{
+			consultaService.marcarConsulta(disponiblidadeId, pacienteId, secretariaId);
+			return "redirect:/consultas";
+		}catch (RuntimeException){
+			model.addAtribute("error", error.getMessage());
+			model.addAtribute("consulta", consultaService.listarEspecilidade());
+			model.addAtribute("especiblidades", consultaService.listarEspecilidade());
+			model.addAtribute("pacientes", consultaService.listarEspecilidade());
+			model.addAtribute("secretarias", consultaService.listarEspecilidade());
+			return "consultas";
+		}
+	}
+	
+	@PostMapping("/receitas")
+	public String listarReceitas(Model model){
+		model.addAtribute("receitas", listagemService.listarReceita());
+		model.addAtribute("consulta", listagemService.listarTodasConsultas());
+		return "receitas";
+	}
+	
+	@PostMapping("/exames")
+	public String listarReceitas(Model model){
+		model.addAtribute("exames", listagemService.listarReceita());
+		model.addAtribute("consulta", listagemService.listarTodasConsultas());
+		return "exames";
+	}
 }
 
 @Controller
 public class DisponiblidadeController{
-	private finalv DisponiblidadeService disponiblidadeservice;
+	private final DisponiblidadeService disponiblidadeservice;
 	private final ListagemService listagemService;
 	
 	public DisponiblidadeService(DisponiblidadeService disponiblidadeservice, ListagemService listagemService){
@@ -103,16 +174,15 @@ public class DisponiblidadeController{
 		model.addAtribute("disponiblidade", disponiblidadeservice.listarTodas());
 		model.addAtribute("medico", listagemService.listarMedico());
 	}
+}
+
+Controller
+public class ConsultaController{
+	private final consultaService;
+	private final listagemService;
 	
-	@PostMapping("/disponiblidade")
-	public String criarDisponiblidade(@RequestParam Long medicoID, @RequestParam LocalDate date, @RequestParam LocalTime horainicio, @RequestParam LocalTime horaend, Model model){
-		try{
-			disponiblidadeservice.criarDisponiblidade(medicoID, date, horainicio, horaend, model)
-		}catch (RuntimeException error){
-			model.addAtribute("error", error.getMessage());
-			model.addAtribute("disponiblidade", disponiblidadeservice.listarTodas());
-			model.addAtribute("medico", listagemService.listarMedico());
-			return "disponiblidade";
-		}
+	public DisponiblidadeService(ConsultaService consultaService, ListagemService listagemService){
+		this.consultaService = consultaService;
+		this.listagemService = listagemService;
 	}
 }
