@@ -135,3 +135,45 @@ public class Consulta{
 	private LocalTime horafin;
 	private String estado;
 }
+
+@Entity
+@Date
+@NoArgsConstructor
+@AllArgsConstructor
+public class Receita{
+	@Id
+	@GenerateValue(stratagy = GenerationType.IDENTITY)
+	private long id;
+	
+	private String medicamento;
+	private String dosagem;
+	
+	@ManyToOne
+	@JoinColumn(name="consulta_id")
+	private Consulta consulta;
+	
+	@Column(length = 1000)
+	private String instrucoes;
+}
+
+@Entity
+@Date
+@NoArgsConstructor
+@AllArgsConstructor
+public class Exame{
+	@Id
+	@GenerateValue(stratagy = GenerationType.IDENTITY)
+	private long id;
+	
+	private String tipoExame;
+	
+	@Column(length = 1000)
+	private String discricao;
+	
+	@Column(length = 1000)
+	private String resultado;
+	
+	@ManyToOne
+	@JoinColumn(name="consulta_id")
+	private Consulta consulta;
+}
