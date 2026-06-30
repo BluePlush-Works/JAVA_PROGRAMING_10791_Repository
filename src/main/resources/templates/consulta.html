@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang='en' xnlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset = 'UTF-8'>
+	<title>Consulta</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body class="theme_pacient">
+	<main>
+		<header>
+			<h1>Squedualed Apointments</h1>
+			<p>Search for specilists and choose a doctor that fits your hour</p>
+		</header>
+		<nav class="menu">
+			<a href="/registar">New User</a>
+			<a href="/pacients">Pacients</a>
+			<a href="/medicos">Doctors</a>
+			<a href="/secretarias">Secretaries</a>
+			<a href="/utilizadors">Users</a>
+			<a href="/disponibilidades">Availability</a>
+			<a href="/consulta">Availability</a>
+		</nav>
+		<section class="cartao" th:if="${disponibilidades != null}">
+			<h2>Squedual a new apointment.</h2>
+			
+			<form action="/consulta" method="post" class="formolario">
+				<label for="disponibilidadeId">Doctor and time.</label>
+				
+				<select name="disponibilidadeId" id="disponibilidadeId" required>
+					<option value="">Select doctor and time</option>
+					<option th:each="d : ${disponibilidade}" th:value="${d.id}" th:text="${d.medico.utilizar.nome + ' - ' + d.horainicio + ' to ' + d.horafin}"></option>
+				</select>
+				
+				<label for="pacientId">Pacient.</label>
+				
+				<select name="pacientId" id="pacientId" required>
+					<option value="">Select pacient</option>
+					<option th:each="p : ${pacientes}" th:value="${p.id}" th:text="${p.utilizador.nome}"></option>
+				</select>
+				
+				<label for="secretariaId">Secretary.</label>
+				
+				<select name="secretariaId" id="secretariaId">
+					<option value="">No Secretary</option>
+					<option th:each="s : ${secretarias}" th:value="${s.id}" th:text="${p.utilizador.nome}"></option>
+				</select>
+				
+				<button type="submit">Submit</button>
+			</form>
+		</section>
+		<section class="cartao">
+			<table>
+				<tr>
+					<th>Pacient</th>
+					<th>Doctor</th>
+					<th>Special</th>
+					<th>Time</th>
+					<th>Clock In</th>
+					<th>Clock Out</th>
+					<th>State</th>
+				</tr>
+				<tr th:each="c : ${consultas}">
+					<th th:text="${c.paciente.utilizador.nome}"></th>
+					<th th:text="${c.disponibilidade.medico.utilizador.nome}"></th>
+					<th th:text="${c.disponibilidade.medico.especialidade}"></th>
+					<th th:text="${#temporals.format(c.date, 'dd/MM/yyyy'}"></th>
+					<th th:text="${c.horainicio}"></th>
+					<th th:text="${c.horafin}"></th>
+					<th th:text="${c.estado}"></th>
+				</tr>
+			</table>
+		</section>
+		<section>
+			<h2>Avilability Search</h2>
+			<p th=if="${error}" th:text="${erro}" class="erro"></p>
+			
+			<form action="/consulta" method="post" class="formolario">
+				<label for="specialId">Specialty</label>
+				
+				<select name="specialId" id="specialId" required>
+					<option value="">Select specialty</option>
+					<option th:each="s : ${especilidades}" th:value="${s}" th:text="${s == especialidadeSelecionada}"></option>
+				</select>
+				<button type="submit">Serch doctor and time.</button>
+			</form>
+		</section>
+	</main>
+	<script src="/js/script.js"></script>
+</body>
