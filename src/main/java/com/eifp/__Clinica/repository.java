@@ -29,3 +29,11 @@ public interface DisponiblidadeRepository extends JpaRepository<Disponiblidade, 
 public interface ConsultaRepository extends JpaRepository<Consulta, Long>{
 	
 }
+
+public interface ReceitaRepository extends JpaRepository<Receita, Long>{
+	
+}
+
+public interface ExameRepository extends JpaRepository<Exame, Long>{
+	
+}
