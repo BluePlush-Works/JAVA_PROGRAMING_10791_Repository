@@ -98,6 +98,10 @@ public class ListagemService {
 		this.exameRepository = exameRepository;
 	}
 
+	public Optional<Utilizador> procurarPorEmailSenha(String email, String senha){
+		return utilizadorRepository.findByEmailAndSenha(email, senha);
+	}
+
 	public List<Utilizador> listarTodos(){
 		return utilizadorRepository.findAll();
 	}
