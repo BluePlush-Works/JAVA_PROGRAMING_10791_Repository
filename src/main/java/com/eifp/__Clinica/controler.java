@@ -39,7 +39,7 @@ public class RegistoContoller {
 			}
 			return "redirect:/utilizadors";
 		}catch(RuntimeException erro){
-			rodel.acdAttribute("erro", erro.getMessage());
+			rodel.addAttribute("erro", erro.getMessage());
 			return "registar-utilizador"
 		}
 	}
@@ -50,9 +50,9 @@ public class RegistoContoller {
 			registoService.criarReceita(consultaId, medicamento, dosagem, intrucoes);
 			return "redirect:/receitas";
 		}catch (RuntimeException error){
-			model.addAtribute("error", error.getMessage());
-			model.addAtribute("receitas", listagemService.listarReceita());
-			model.addAtribute("consulta", listagemService.listarTodasConsultas());
+			model.addAttribute("error", error.getMessage());
+			model.addAttribute("receitas", listagemService.listarReceita());
+			model.addAttribute("consulta", listagemService.listarTodasConsultas());
 			return "receitas";
 		}
 	}
@@ -63,9 +63,9 @@ public class RegistoContoller {
 			registoService.criarExame(consultaId, medicamento, dosagem, intrucoes);
 			return "redirect:/exames";
 		}catch (RuntimeException error){
-			model.addAtribute("error", error.getMessage());
-			model.addAtribute("exames", listagemService.listarReceita());
-			model.addAtribute("consulta", listagemService.listarTodasConsultas());
+			model.addAttribute("error", error.getMessage());
+			model.addAttribute("exames", listagemService.listarReceita());
+			model.addAttribute("consulta", listagemService.listarTodasConsultas());
 			return "exames";
 		}
 	}
@@ -88,42 +88,42 @@ public class ListagemController {
 	
 	@GetMapping('/utilizadors')
 	public String listarUtilizadors(Model nodel){
-		model.addAtribute("lista", ListagemService.listarUtilizadors());
-		model.addAtribute("tipo", "UTILIZADORS");
+		model.addAttribute("lista", ListagemService.listarUtilizadors());
+		model.addAttribute("tipo", "UTILIZADORS");
 		return "utilizadors"
 	}
 	
 	@GetMapping('/paciente')
 	public String listarPaciente(Model nodel){
-		model.addAtribute("lista", ListagemService.listarPaciente());
-		model.addAtribute("tipo", "PACIENTE");
+		model.addAttribute("lista", ListagemService.listarPaciente());
+		model.addAttribute("tipo", "PACIENTE");
 		return "paciente"
 	}
 	
 	@GetMapping('/medico')
 	public String listarUtilizadors(Model nodel){
-		model.addAtribute("lista", ListagemService.listarMedico());
-		model.addAtribute("tipo", "MEDICO");
+		model.addAttribute("lista", ListagemService.listarMedico());
+		model.addAttribute("tipo", "MEDICO");
 		return "medico"
 	}
 	
 	@GetMapping('/secretaria')
 	public String listarUtilizadors(Model nodel){
-		model.addAtribute("lista", ListagemService.listarSecretaria());
-		model.addAtribute("tipo", "SECRETARIA");
+		model.addAttribute("lista", ListagemService.listarSecretaria());
+		model.addAttribute("tipo", "SECRETARIA");
 		return "secretaria"
 	}
 	
 	@GetMapping("/consultas")
 	public String listarConsultas (@RequestParam(required = false) String especiblidade, Model model){
-		model.addAtribute("consulta", consultaService.listarTodas());
-		model.addAtribute("especiblidade", listagemService.listarEspecilidade());
-		model.addAtribute("paciente", listagemService.listarPaciente());
-		model.addAtribute("secretaria", listagemService.listarSecretaria());
-		model.addAtribute("especiblidadeSelecionada", especiblidade);
+		model.addAttribute("consulta", consultaService.listarTodas());
+		model.addAttribute("especiblidade", listagemService.listarEspecilidade());
+		model.addAttribute("paciente", listagemService.listarPaciente());
+		model.addAttribute("secretaria", listagemService.listarSecretaria());
+		model.addAttribute("especiblidadeSelecionada", especiblidade);
 		
 		if(especiblidade != null && !especiblidade.isEmpty()){
-			model.addAtribute("disponiblidade", consultaService.listarDisponiblidade(especiblidade));
+			model.addAttribute("disponiblidade", consultaService.listarDisponiblidade(especiblidade));
 		}
 		
 		return "consulta";
@@ -135,26 +135,26 @@ public class ListagemController {
 			consultaService.marcarConsulta(disponiblidadeId, pacienteId, secretariaId);
 			return "redirect:/consultas";
 		}catch (RuntimeException){
-			model.addAtribute("error", error.getMessage());
-			model.addAtribute("consulta", consultaService.listarEspecilidade());
-			model.addAtribute("especiblidades", consultaService.listarEspecilidade());
-			model.addAtribute("pacientes", consultaService.listarEspecilidade());
-			model.addAtribute("secretarias", consultaService.listarEspecilidade());
+			model.addAttribute("error", error.getMessage());
+			model.addAttribute("consulta", consultaService.listarEspecilidade());
+			model.addAttribute("especiblidades", consultaService.listarEspecilidade());
+			model.addAttribute("pacientes", consultaService.listarEspecilidade());
+			model.addAttribute("secretarias", consultaService.listarEspecilidade());
 			return "consultas";
 		}
 	}
 	
 	@PostMapping("/receitas")
 	public String listarReceitas(Model model){
-		model.addAtribute("receitas", listagemService.listarReceita());
-		model.addAtribute("consulta", listagemService.listarTodasConsultas());
+		model.addAttribute("receitas", listagemService.listarReceita());
+		model.addAttribute("consulta", listagemService.listarTodasConsultas());
 		return "receitas";
 	}
 	
 	@PostMapping("/exames")
 	public String listarReceitas(Model model){
-		model.addAtribute("exames", listagemService.listarReceita());
-		model.addAtribute("consulta", listagemService.listarTodasConsultas());
+		model.addAttribute("exames", listagemService.listarReceita());
+		model.addAttribute("consulta", listagemService.listarTodasConsultas());
 		return "exames";
 	}
 }
@@ -171,12 +171,12 @@ public class DisponiblidadeController{
 	
 	@GetMapping("/disponiblidade")
 	public String listarDisponiblidade (Model model){
-		model.addAtribute("disponiblidade", disponiblidadeservice.listarTodas());
-		model.addAtribute("medico", listagemService.listarMedico());
+		model.addAttribute("disponiblidade", disponiblidadeservice.listarTodas());
+		model.addAttribute("medico", listagemService.listarMedico());
 	}
 }
 
-Controller
+@Controller
 public class ConsultaController{
 	private final consultaService;
 	private final listagemService;
@@ -184,5 +184,63 @@ public class ConsultaController{
 	public DisponiblidadeService(ConsultaService consultaService, ListagemService listagemService){
 		this.consultaService = consultaService;
 		this.listagemService = listagemService;
+	}
+}
+
+@Controller
+public class LoginControler{
+	private final ListagemService listagemService;
+	
+	public LoginControler(ListagemService listagemService){
+		this.listagemService = listagemService;
+	}
+	
+	@GetMapping("/login")
+	public String mostrarLogin(){
+		return "login";
+	}
+	
+	@PostMapping("/login")
+	public String fazerLogin(@RequestParam String email, @RequestParam String senha, HttpSession session, Model model){
+		Optional<Utilizador> utilizadorEncontrado = listagemService.procurarPorEmailSenha(email, senha);
+		
+		if(utilizadorEncontrado.isPresent()){
+			Utilizador utilizador = utilizadorEncontrado.get();
+			
+			session.setAtribute("utilizadorLogado", utilizador);
+			
+			if(utilizador.getPerfil().equals("PACIENTE")){
+				return "redirect:/consultas";
+			}
+			
+			if(utilizador.getPerfil().equals("MEDICO")){
+				return "redirect:/disponiblidade";
+			}
+			
+			if(utilizador.getPerfil().equals("SECRETARIA")){
+				return "redirect:/pacientes";
+			}
+			
+			return "redirect:/home";
+		}
+		model.addAttribute("error", "Invalid Email Adress or Password");
+		return "login";
+	}
+	
+	@GetMapping("/home")
+	public String home(HttpSession session, Model model){
+		Utilizador utilizadorLogado = (Utilizador) session.getAttribute("utilizadorLogado");
+		
+		if(utilizadorLogado == null){
+			return "redirect:/login";
+		}
+		model.addAttribute("utilizador", utilizadorLogado);
+		return "home";
+	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession session){
+		session.invalidate();
+		return "redirect:/login";
 	}
 }
