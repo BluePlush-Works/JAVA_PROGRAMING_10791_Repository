@@ -6,7 +6,9 @@ import com.iefd._Clinica.model.java;
 import java.util.List;
 
 public interface UtilizadorRepository extends JpaRepository<Utilizador, Long>{
+	boolean existsByEmail(String email);
 	
+	Optional<Utilizador>findByEmailAndSenha(String email, String senha);
 }
 
 public interface SecretariaRepository extends JpaRepository<Secretaria, Long>{
