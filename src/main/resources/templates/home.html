@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang='en' xnlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset = 'UTF-8'>
+	<title>Signup</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+	<main class="theme_user">
+		<header class="cabecalho">
+			<h1>Hello</h1>
+			<p>
+				Username: <strong th:text="${utilizador.nome}"></strong>
+				Perfil: <strong th:text="${utilizador.perfil}"></strong>
+			</p>
+		</header>
+		<nav class="menu">
+			<a href="/home">Front Page</a>
+			<a href="/disponibilidades" th:if="${utilizador.perfil == 'PACIENTE' || utilizador.perfil == 'SECRETARIA'}">Availability</a>
+			<a href="/consulta" th:if="${utilizador.perfil == 'MEDICO'}">Apointments</a>
+			<a href="/receitas" th:if="${utilizador.perfil == 'MEDICO'}">Recites</a>
+			<a href="/exames" th:if="${utilizador.perfil == 'MEDICO'}">Exams</a>
+			<a href="/registar" th:if="${utilizador.perfil == 'SECRETARIA'}">New User</a>
+			<a href="/pacients" th:if="${utilizador.perfil == 'SECRETARIA'}">Pacients</a>
+			<a href="/medicos" th:if="${utilizador.perfil == 'SECRETARIA'}">Doctors</a>
+			<a href="/secretarias" th:if="${utilizador.perfil == 'SECRETARIA'}">Secretaries</a>
+			<a href="/utilizadors" th:if="${utilizador.perfil == 'SECRETARIA'}">Users</a>
+			<a href="/logout">Log Out</a>
+		</nav>
+		
+		<section>
+			<h2>Home Page</h2>
+			
+			<p th:if="${utilizador.perfil == 'PACIENTE'}">Check Available Doctors</p>
+			<p th:if="${utilizador.perfil == 'MEDICO'}">Make Apointments, Medical Recites and Exams</p>
+			<p th:if="${utilizador.perfil == 'SECRETARIA'}">Check Users of the System</p>
+		</section>
+	</main>
+	<script src="/js/script.js"></script>
+</body>
