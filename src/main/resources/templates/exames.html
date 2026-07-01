@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang='en' xnlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset = 'UTF-8'>
+	<title>Exames</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+	<main class="theme_doctor">
+		<header>
+			<h1>Medical Exams</h1>
+			<p>List of medical exams to be taken</p>
+		</header>
+		<nav class="menu">
+			<a href="/registar">New User</a>
+			<a href="/pacients">Pacients</a>
+			<a href="/medicos">Doctors</a>
+			<a href="/secretarias">Secretaries</a>
+			<a href="/utilizadors">Users</a>
+			<a href="/disponibilidades">Availability</a>
+			<a href="/consulta">Apointments</a>
+			<a href="/receitas">Recites</a>
+			<a href="/exames">Exams</a>
+		</nav>
+		<section class="cartao">
+			<h2>Regitered Exams</h2>
+			<table>
+				<tr>
+					<th>Pacient</th>
+					<th>Doctor</th>
+					<th>Specilty</th>
+					<th>Apointment Date</th>
+					<th>Time</th>
+					<th>Exam Type</th>
+					<th>Discription</th>
+					<th>Results</th>
+				</tr>
+				<tr th:each="e : ${exames}">
+					<th th:text="${e.consulta.paciente.utilizador.nome}"></th>
+					<th th:text="${e.consulta.disponibilidade.medico.utilizador.nome}"></th>
+					<th th:text="${e.consulta.disponibilidade.medico.especialidade}"></th>
+					<th th:text="${#temporals.format(e.consulta.data, 'dd/MM/yyyy')}"></th>
+					<th th:text="${e.consulta.horainicio + ' to ' + r.consulta.horafim}"></th>
+					<th th:text="${e.tipoExame}"></th>
+					<th th:text="${e.discricao}"></th>
+					<th th:text="${e.resultado}"></th>
+				</tr>
+			</table>
+		</section>
+		<section class="cartao">
+			<h2>New Exam</h2>
+			<p th=if="${error}" th:text="${erro}" class="erro"></p>
+			
+			<form action="/exames" method="post" class="formulario">
+				<label for="consultaId">Apointment</label>
+				<select name="consultaId" id="consultaId" required>
+					<option value="">Select an Apointment</option>
+					<option th:each="c : ${consultas}" th:text="${c.pacients.utilizador.nome + ' - ' + c.disponibilidade.medico.utilizador.nome} + ' - ' + c.disponibilidade.medico.especialidade + ' - ' + #temporals.format(c.date, 'dd/MM/yyyy') + ' - ' + c.horainicio + ' to ' + c.horafim">Select an Apointment</option>
+				</select>
+				
+				<label for="tipoExame">Exam Type</label>
+				<input type="text" id="tipoExame" name="tipoExame" placeholder="Exam Type">
+				
+				<label for="discricao">Discription</label>
+				<input type="text" id="discricao" name="discricao" placeholder="Discription">
+				
+				<label for="resultado">Results</label>
+				<input type="text" id="resultado" name="resultado" placeholder="Results">
+				
+				<button type="submit">Save Exam</button>
+			</form>
+		</section>
+	</main>
+	<script src="/js/script.js"></script>
+</body>
