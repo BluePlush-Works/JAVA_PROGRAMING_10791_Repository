@@ -14,15 +14,16 @@
 			<p>List of medical exams to be taken</p>
 		</header>
 		<nav class="menu">
-			<a href="/registar">New User</a>
-			<a href="/pacients">Pacients</a>
-			<a href="/medicos">Doctors</a>
-			<a href="/secretarias">Secretaries</a>
-			<a href="/utilizadors">Users</a>
-			<a href="/disponibilidades">Availability</a>
-			<a href="/consulta">Apointments</a>
-			<a href="/receitas">Recites</a>
-			<a href="/exames">Exams</a>
+			<a href="/home">Front Page</a>
+			<a href="/disponibilidades" th:if="${utilizador.perfil == 'PACIENTE' || utilizador.perfil == 'SECRETARIA'}">Availability</a>
+			<a href="/consulta" th:if="${utilizador.perfil == 'MEDICO'}">Apointments</a>
+			<a href="/receitas" th:if="${utilizador.perfil == 'MEDICO'}">Recites</a>
+			<a href="/exames" th:if="${utilizador.perfil == 'MEDICO'}">Exams</a>
+			<a href="/pacients" th:if="${utilizador.perfil == 'SECRETARIA'}">Pacients</a>
+			<a href="/medicos" th:if="${utilizador.perfil == 'SECRETARIA'}">Doctors</a>
+			<a href="/secretarias" th:if="${utilizador.perfil == 'SECRETARIA'}">Secretaries</a>
+			<a href="/utilizadors" th:if="${utilizador.perfil == 'SECRETARIA'}">Users</a>
+			<a href="/logout">Log Out</a>
 		</nav>
 		<section class="cartao">
 			<h2>Regitered Exams</h2>
