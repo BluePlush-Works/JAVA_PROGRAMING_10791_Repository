@@ -19,6 +19,7 @@
 			<a href="/consulta" th:if="${utilizador.perfil == 'MEDICO'}">Apointments</a>
 			<a href="/receitas" th:if="${utilizador.perfil == 'MEDICO'}">Recites</a>
 			<a href="/exames" th:if="${utilizador.perfil == 'MEDICO'}">Exams</a>
+			<a href="/registar" th:if="${utilizador.perfil == 'SECRETARIA'}">New User</a>
 			<a href="/pacients" th:if="${utilizador.perfil == 'SECRETARIA'}">Pacients</a>
 			<a href="/medicos" th:if="${utilizador.perfil == 'SECRETARIA'}">Doctors</a>
 			<a href="/secretarias" th:if="${utilizador.perfil == 'SECRETARIA'}">Secretaries</a>
