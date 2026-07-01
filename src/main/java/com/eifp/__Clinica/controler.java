@@ -83,25 +83,45 @@ public class ListagemController {
 	
 	@GetMapping('/')
 	public String paginainicial(){
-		return "redirect:/pacientes";
+		return "redirect:/login";
 	}
 	
 	@GetMapping('/utilizadors')
-	public String listarUtilizadors(Model nodel){
+	public String listarUtilizadors(Model model, HttpSession session){
 		model.addAttribute("lista", ListagemService.listarUtilizadors());
 		model.addAttribute("tipo", "UTILIZADORS");
 		return "utilizadors"
 	}
 	
 	@GetMapping('/paciente')
-	public String listarPaciente(Model nodel){
+	public String listarPaciente(Model model, HttpSession session){
+		Utilizador utilizadorLogado = (Utilizador) session.getAttribute("utilizadorLogado");
+		
+		if(utilizadorLogado == null){
+			return "redirect:/login";
+		}
+		
+		if(utilizadorLogado.getPerfil().equals('PACIENTE')){
+			return "redirect:/home";
+		}
+		
 		model.addAttribute("lista", ListagemService.listarPaciente());
 		model.addAttribute("tipo", "PACIENTE");
 		return "paciente"
 	}
 	
 	@GetMapping('/medico')
-	public String listarUtilizadors(Model nodel){
+	public String listarUtilizadors(Model model, HttpSession session){
+		Utilizador utilizadorLogado = (Utilizador) session.getAttribute("utilizadorLogado");
+		
+		if(utilizadorLogado == null){
+			return "redirect:/login";
+		}
+		
+		if(utilizadorLogado.getPerfil().equals('MEDICO')){
+			return "redirect:/home";
+		}
+		
 		model.addAttribute("lista", ListagemService.listarMedico());
 		model.addAttribute("tipo", "MEDICO");
 		return "medico"
@@ -109,6 +129,16 @@ public class ListagemController {
 	
 	@GetMapping('/secretaria')
 	public String listarUtilizadors(Model nodel){
+		Utilizador utilizadorLogado = (Utilizador) session.getAttribute("utilizadorLogado");
+		
+		if(utilizadorLogado == null){
+			return "redirect:/login";
+		}
+		
+		if(utilizadorLogado.getPerfil().equals('SECRETARIA')){
+			return "redirect:/home";
+		}
+		
 		model.addAttribute("lista", ListagemService.listarSecretaria());
 		model.addAttribute("tipo", "SECRETARIA");
 		return "secretaria"
