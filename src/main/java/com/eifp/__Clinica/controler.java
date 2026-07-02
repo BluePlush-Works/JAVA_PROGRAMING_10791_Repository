@@ -274,3 +274,88 @@ public class LoginControler{
 		return "redirect:/login";
 	}
 }
+
+public class EditarControler{
+	private final EditarService editarService;
+	private final ListagemService listagemService;
+	
+	public EditarControler(EditarService editarService, ListagemService listagemService){
+		this editarService = editarService;
+		this listagemService = listagemService;
+	}
+	
+	@GetMapping("/editar/paciente/{id}")
+	public String mostrarEditarPaciente(@PathVariable Long id, Model model){
+		Paciente paciente = listagemService.procurarPacientePorId(id);
+		
+		model.addAttribute("item", paciente);
+		model.addAttribute("tipo", "PACIENTE");
+		return "editar_utilizador";
+	}
+	
+	@GetMapping("/editar/medico/{id}")
+	public String mostrarEditarMedico(@PathVariable Long id, Model model){
+		Medico medico = listagemService.procurarMedicoPorId(id);
+		
+		model.addAttribute("item", medico);
+		model.addAttribute("tipo", "MEDICO");
+		return "editar_utilizador";
+	}
+	
+	@GetMapping("/editar/secretaria/{id}")
+	public String mostrarEditarSecretaria(@PathVariable Long id, Model model){
+		Secretaria secretaria = listagemService.procurarSecretariaPorId(id);
+		
+		model.addAttribute("item", secretaria);
+		model.addAttribute("tipo", "SECRETARIA");
+		return "editar_utilizador";
+	}
+	
+	@PostMapping("/editar/paciente/{id}")
+	public String editarPaciente(@PathVariable Long id, @PathVariable String nome, @PathVariable email, @PathVariable senha, @PathVariable dataNascimento, @PathVariable telefone, endereco){
+		editarService.editarPaciente(id, email, senha, dataNascimento, telefone, endereco);
+		
+		return "redirect:/pacientes";
+	}
+	
+	@PostMapping("/editar/medico/{id}")
+	public String editarMedico(@PathVariable Long id, @PathVariable String nome, @PathVariable email, @PathVariable senha, @PathVariable dataNascimento, @PathVariable telefone, endereco, @PathVariable String especiblidade){
+		editarService.editarMedico(id, email, senha, dataNascimento, telefone, endereco, especiblidade);
+		
+		return "redirect:/medicos";
+	}
+	
+	@PostMapping("/editar/secretaria/{id}")
+	public String editarSecretaria(@PathVariable Long id, @PathVariable String nome, @PathVariable email, @PathVariable senha, @PathVariable dataNascimento, @PathVariable telefone, endereco){
+		editarService.editarSecretaria(id, email, senha, dataNascimento, telefone, endereco);
+		
+		return "redirect:/secretarias";
+	}
+}
+
+@Controller
+public class RemoverController{
+	private final RemoveService removeService;
+	
+	public RemoverController(RemoveService removeService){
+		this removeService = removeService;
+	}
+	
+	@GetMapping("/editar/paciente/{id}")
+	public String removerPaciente(@PathVariable Long id){
+		removeService.removerPaciente(id);
+		return "redirect:/pacientes";
+	}
+	
+	@GetMapping("/editar/medico/{id}")
+	public String removerMedico(@PathVariable Long id){
+		removeService.removerMedico(id);
+		return "redirect:/medicos";
+	}
+	
+	@GetMapping("/editar/secretaria/{id}")
+	public String removerSecretaria(@PathVariable Long id){
+		removeService.removerSecretaria(id);
+		return "redirect:/secretarias";
+	}
+}
