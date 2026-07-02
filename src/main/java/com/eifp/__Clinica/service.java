@@ -216,3 +216,108 @@ public class ConsultaService{
 		disponiblidaderepository.save(disponibilidade);
 	}
 }
+
+@Service
+public class EditarService{
+	private final UtilizadorRepository utilizadorRepository;
+	private final PacienteRepository pacienteRepository;
+	private final MedicoRepository medicoRepository;
+	private final SecretariaRepository secretariaRepository;
+	
+	public EditarService(UtilizadorRepository utilizadorRepository, PacienteRepository pacienteRepository, MedicoRepository medicoRepository, SecretariaRepository secretariarepository){
+		this.utilizadorRepository = utilizadorRepository;
+		this.pacienteRepository = pacienteRepository;
+		this.medicoRepository = medicoRepository;
+		this.secretariarepository = secretariarepository;
+	}
+	
+	public void editarPaciente(Long pacienteId, String name, String email, String senha, LocalDate dataNascimento, String telefone, String endereco){
+		Paciente paciente = pacienteRepository.findById(pacienteId).orElseThrow(()-> new RuntimeException("No pacient found."));
+		
+		Utilizador utilizador = paciente.getUtilizador();
+	
+		utilizador.setNome(name);
+		utilizador.setEmail(email);
+		utilizador.setSenha(senha);
+		utilizador.setDataNascimento(dataNascimento);
+		utilizador.setTelefone(telefone);
+		utilizador.setEndereco(endereco);
+		
+		utilizadorRepository.save(utilizador);
+	}
+	
+	public void editarMedico(Long medicoId, String name, String email, String senha, LocalDate dataNascimento, String telefone, String endereco, String especiblidade){
+		Medico medico = medicoRepository.findById(medicoId).orElseThrow(()-> new RuntimeException("No doctor found."));
+		
+		Utilizador utilizador = medico.getUtilizador();
+	
+		utilizador.setNome(name);
+		utilizador.setEmail(email);
+		utilizador.setSenha(senha);
+		utilizador.setDataNascimento(dataNascimento);
+		utilizador.setTelefone(telefone);
+		utilizador.setEndereco(endereco);
+		
+		medico.setEspecialidade(especiblidade);
+		
+		utilizadorRepository.save(utilizador);
+		medicoRepository.save(medico);
+	}
+	
+	public void editarSecretaria(Long secretariaId, String name, String email, String senha, LocalDate dataNascimento, String telefone, String endereco){
+		Secretaria secretaria = secretariaRepository.findById(secretariaId).orElseThrow(()-> new RuntimeException("No secretary found."));
+		
+		Utilizador utilizador = secretaria.getUtilizador();
+	
+		utilizador.setNome(name);
+		utilizador.setEmail(email);
+		utilizador.setSenha(senha);
+		utilizador.setDataNascimento(dataNascimento);
+		utilizador.setTelefone(telefone);
+		utilizador.setEndereco(endereco);
+		
+		utilizadorRepository.save(utilizador);
+	}
+}
+
+@Service
+public class RemoverService{
+	private final UtilizadorRepository utilizadorRepository;
+	private final PacienteRepository pacienteRepository;
+	private final MedicoRepository medicoRepository;
+	private final SecretariaRepository secretariaRepository;
+	
+	public RemoverService(UtilizadorRepository utilizadorRepository, PacienteRepository pacienteRepository, MedicoRepository medicoRepository, SecretariaRepository secretariarepository){
+		this.utilizadorRepository = utilizadorRepository;
+		this.pacienteRepository = pacienteRepository;
+		this.medicoRepository = medicoRepository;
+		this.secretariarepository = secretariarepository;
+	}
+	
+	public void removerPaciente(Long pacienteId){
+		Paciente paciente = pacienteRepository.findById(pacienteId).orElseThrow(()-> new RuntimeException("No pacient found."));
+		
+		Utilizador utilizador = paciente.getUtilizador();
+		
+		pacienteRepository.delete(paciente);
+		utilizadorRepository.delete(utilizador);
+	}
+	
+	public void removerMedico(Long medicoId){
+		Medico medico = medicoRepository.findById(medicoId).orElseThrow(()-> new RuntimeException("No pacient found."));
+		
+		Utilizador utilizador = medico.getUtilizador();
+		
+		medicoRepository.delete(medico);
+		utilizadorRepository.delete(utilizador);
+	}
+	
+	public void removerSecretaria(Long secretariaId){
+		Secretaria secretaria = secretariaRepository.findById(secretariaId).orElseThrow(()-> new RuntimeException("No pacient found."));
+		
+		Utilizador utilizador = secretaria.getUtilizador();
+		
+		secretariaRepository.delete(secretaria);
+		utilizadorRepository.delete(utilizador);
+	}
+}
