@@ -48,6 +48,17 @@
 					<td th:text="${tipo=='UTILIZADOR'} ? ${item.idade}: ${item.utilizador.idade}"></td>
 					<td th:text="${tipo=='UTILIZADOR'} ? ${item.telefone}: ${item.utilizador.telefone}"></td>
 					<td th:text="${tipo=='UTILIZADOR'} ? ${item.endereco}: ${item.utilizador.endereco}"></td>
+					<td>
+						<button th:if="${tipo =='PACIENTE'}" th:href="@{/editar/paciente/{id}}(id=${item.id})">Edit</button>
+						<button th:if="${tipo =='MEDICO'}" th:href="@{/editar/medico/{id}}(id=${item.id})">Edit</button>
+						<button th:if="${tipo =='SECRETARIA'}" th:href="@{/editar/secretaria/{id}}(id=${item.id})">Edit</button>
+						
+						<span th:if="${tipo =='PACIENTE' || tipo =='MEDICO' || tipo =='SECRETARIA'}">
+						
+						<button th:if="${tipo =='PACIENTE'}" th:href="@{/remover/paciente/{id}}(id=${item.id})">Delete</button>
+						<button th:if="${tipo =='MEDICO'}" th:href="@{/remover/medico/{id}}(id=${item.id})">Delete</button>
+						<button th:if="${tipo =='SECRETARIA'}" th:href="@{/remover/secretaria/{id}}(id=${item.id})">Delete</button>
+					</td>
 					
 				</tr>
 			</table>
