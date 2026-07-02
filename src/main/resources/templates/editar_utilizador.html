@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang='en' xnlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta charset = 'UTF-8'>
+	<title>Editar Utilizador</title>
+	<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body class="theme_user">
+	<main>
+		<header class="cabecalho">
+			<h1>Edit</h1>
+			<p>Change information about a registered user in the system..</p>
+		</header>
+		<nav class="menu">
+			<a href="/home">Front Page</a>
+			<a href="/disponibilidades" th:if="${utilizador.perfil == 'PACIENTE' || utilizador.perfil == 'SECRETARIA'}">Availability</a>
+			<a href="/consulta" th:if="${utilizador.perfil == 'MEDICO'}">Apointments</a>
+			<a href="/receitas" th:if="${utilizador.perfil == 'MEDICO'}">Recites</a>
+			<a href="/exames" th:if="${utilizador.perfil == 'MEDICO'}">Exams</a>
+			<a href="/registar" th:if="${utilizador.perfil == 'SECRETARIA'}">New User</a>
+			<a href="/pacients" th:if="${utilizador.perfil == 'SECRETARIA'}">Pacients</a>
+			<a href="/medicos" th:if="${utilizador.perfil == 'SECRETARIA'}">Doctors</a>
+			<a href="/secretarias" th:if="${utilizador.perfil == 'SECRETARIA'}">Secretaries</a>
+			<a href="/utilizadors" th:if="${utilizador.perfil == 'SECRETARIA'}">Users</a>
+			<a href="/logout">Log Out</a>
+		</nav>
+		<section class="cartao">
+			<form th:if="${tipo == 'PACIENTE'}" th:action="@{/editar/paciente/{id}(id=${item.id})}" method="post" class="formulario">
+				<label for="nomePaciente">Name</label>
+				<input type="text" id="nomePaciente" name="nome" th:value="${item.utilizador.nome}">
+				<label for="emailPaciente">Email</label>
+				<input type="text" id="emailPaciente" name="email" th:value="${item.utilizador.email}">
+				<label for="senhaPaciente">Password</label>
+				<input type="text" id="senhaPaciente" name="senha"th:value="${item.utilizador.senha}">
+				<label for="dataNascimentoPaciente">Date of Birth</label>
+				<input type="date" id="dataNascimentoPaciente" name="dataNascimento" th:value="${item.utilizador.dataNascimento}">
+				<label for="telefonePaciente">Phone Number</label>
+				<input type="text" id="telefonePaciente" name="telefone" th:value="${item.utilizador.telefone}">
+				<label for="enderecoPaciente">Adresse</label>
+				<input type="text" id="enderecoPaciente" name="endereco" th:value="${item.utilizador.endereco}">
+				<button type="submit">Confirm Changes</button>
+			</form>
+			
+			<form th:if="${tipo == 'MEDICO'}" th:action="@{/editar/medico/{id}(id=${item.id})}" method="post" class="formulario">
+				<label for="nomeMedico">Name</label>
+				<input type="text" id="nomeMedico" name="nome" th:value="${item.utilizador.nome}">
+				<label for="emailMedico">Email</label>
+				<input type="text" id="emailMedico" name="email" th:value="${item.utilizador.email}">
+				<label for="senhaMedico">Password</label>
+				<input type="text" id="senhaMedico" name="senha"th:value="${item.utilizador.senha}">
+				<label for="dataNascimentoMedico">Date of Birth</label>
+				<input type="date" id="dataNascimentoMedico" name="dataNascimento" th:value="${item.utilizador.dataNascimento}">
+				<label for="telefoneMedico">Phone Number</label>
+				<input type="text" id="telefoneMedico" name="telefone" th:value="${item.utilizador.telefone}">
+				<label for="enderecoMedico">Adresse</label>
+				<input type="text" id="enderecoMedico" name="endereco" th:value="${item.utilizador.endereco}">
+				<label for="special">Adresse</label>
+				<input type="text" id="special" name="special" th:value="${item.medico.especibilidade}">
+				<button type="submit">Confirm Changes</button>
+			</form>
+			
+			<form th:if="${tipo == 'SECRETARIA'}" th:action="@{/editar/secretaria/{id}(id=${item.id})}" method="post" class="formulario">
+				<label for="nomeSecretaria">Name</label>
+				<input type="text" id="nomeSecretaria" name="nome" th:value="${item.utilizador.nome}">
+				<label for="emailSecretaria">Email</label>
+				<input type="text" id="emailSecretaria" name="email" th:value="${item.utilizador.email}">
+				<label for="senhaSecretaria">Password</label>
+				<input type="text" id="senhaSecretaria" name="senha"th:value="${item.utilizador.senha}">
+				<label for="dataNascimentoSecretaria">Date of Birth</label>
+				<input type="date" id="dataNascimentoSecretaria" name="dataNascimento" th:value="${item.utilizador.dataNascimento}">
+				<label for="telefoneSecretaria">Phone Number</label>
+				<input type="text" id="telefoneSecretaria" name="telefone" th:value="${item.utilizador.telefone}">
+				<label for="enderecoSecretaria">Adresse</label>
+				<input type="text" id="enderecoSecretaria" name="endereco" th:value="${item.utilizador.endereco}">
+				<button type="submit">Confirm Changes</button>
+			</form>
+		</section>
+	</main>
+	<script src="/js/script.js"></script>
+</body>
